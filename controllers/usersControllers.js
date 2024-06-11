@@ -51,7 +51,6 @@ export const signin = async (req, res, next) => {
       expiresIn: '24h',
     });
     await updateUser({ _id: userEmail._id }, { token });
-    console.log(userEmail);
     res.json({
       token,
       user: { email, username: userEmail.username },
@@ -76,7 +75,6 @@ export const logout = async (req, res) => {
 };
 
 export const updateAvatar = async (req, res, next) => {
-  console.log(req.user);
   if (!req.file) {
     throw HttpError(400, 'File not found');
   }
@@ -84,7 +82,6 @@ export const updateAvatar = async (req, res, next) => {
   const { _id } = req.user;
   const { path: oldPath, filename } = req.file;
   const newPath = path.join(avatarPath, filename);
-  console.log(newPath);
   await fs.rename(oldPath, newPath);
   const avatar = path.join('avatars', filename);
 
@@ -96,9 +93,6 @@ export const updateAvatar = async (req, res, next) => {
   res.status(200).json({
     user: { email: result.email, username: result.username, ...result },
   });
-  // res.status(200).json({
-  //   avatarURL: avatar,
-  // });
 };
 
 // Response
@@ -117,63 +111,6 @@ export const updateAvatar = async (req, res, next) => {
 // "learnedWord": null,
 // "achievementURL": null,
 // "remind": true,
-
-// export const editProfile = async (req, res, next) => {
-//   try {
-//     const { username, email } = req.body;
-//     console.log(req.body);
-
-//     const {
-//       _id,
-//       avatar_id: oldAvatarId,
-//       email: emailUser,
-//       username: nameUser,
-//     } = req.user;
-
-//     const user = await findUser({ email });
-//     if (user && email !== emailUser) {
-//       if (req.file) {
-//         await fs.unlink(req.file.path);
-//       }
-//       throw HttpError(409, 'Email in use');
-//     }
-
-//     const updateName = username ? username : nameUser;
-//     const updateEmail = email ? email : emailUser;
-
-//     let avatarURL = null;
-//     if (req.file) {
-//       const { path: oldPath, filename } = req.file;
-//       const newPath = path.join(avatarPath, filename);
-//       await fs.rename(oldPath, newPath);
-//       avatarURL = path.join('avatars', filename);
-//     }
-
-//     const updateData = {
-//       username: updateName,
-//       email: updateEmail,
-//     };
-
-//     if (avatarURL) {
-//       updateData.avatarURL = avatarURL;
-//     }
-
-//     const result = await authServices.updateUser({ _id }, updateData);
-
-//     if (oldAvatarId && avatarURL) {
-//       const oldAvatarPath = path.join(__dirname, oldAvatarId);
-//       await fs
-//         .unlink(oldAvatarPath)
-//         .catch(err =>
-//           console.error(`Failed to delete old avatar: ${err.message}`)
-//         );
-//     }
-
-//     res.status(200).json(result);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
 
 export const editProfile = async (req, res) => {
   const { username, email } = req.body;

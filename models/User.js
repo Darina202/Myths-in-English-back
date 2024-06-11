@@ -1,17 +1,14 @@
 import { Schema, model } from 'mongoose';
-import { statusList } from '../helpers/user-constants.js';
 import { handleSaveError, setUpdateSetting } from './hooks.js';
 
 const userSchema = new Schema(
   {
     username: {
       type: String,
-      // match: usernameRegexp,
       required: [true, 'Username is required'],
     },
     email: {
       type: String,
-      // match: [emailRegexp, 'Email is invalid'],
       unique: true,
       required: [true, 'Email is required'],
     },
@@ -32,10 +29,12 @@ const userSchema = new Schema(
       default: null,
     },
     learnedWord: { type: Number, default: null },
-    achievementURL: {
-      type: String,
-      default: null,
-    },
+    achievementURL: [
+      {
+        type: String,
+        default: null,
+      },
+    ],
     langSetting: {
       profLang: {
         type: String,

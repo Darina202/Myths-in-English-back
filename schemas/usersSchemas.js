@@ -1,5 +1,4 @@
 import Joi from 'joi';
-import { statusList } from '../helpers/user-constants.js';
 
 export const userSignUpSchema = Joi.object({
   username: Joi.string().min(1).required(),

@@ -4,7 +4,6 @@ import {
   signin,
   currentUser,
   logout,
-  updateAvatar,
   editProfile,
 } from '../controllers/usersControllers.js';
 import { userSignUpSchema, userSignInSchema } from '../schemas/usersSchemas.js';

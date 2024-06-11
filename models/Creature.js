@@ -7,10 +7,13 @@ const creatureSchema = new Schema(
       type: String,
     },
     image: { type: String },
-    description: {
-      type: String,
-      default: null,
-    },
+    picture: { type: String },
+    description: [
+      {
+        eng_desc: String,
+        ua_desc: String,
+      },
+    ],
     test: [
       {
         title: { type: String, required: true },

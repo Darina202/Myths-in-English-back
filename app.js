@@ -5,6 +5,10 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
 import authRouter from './routes/authRouter.js';
+import mythologyRouter from './routes/mythologyRouter.js';
+import mythSectionRouter from './routes/mythSectionRouter.js';
+import creatureRouter from './routes/creatureRouter.js';
+import exerciseRouter from './routes/exerciseRouter.js';
 
 dotenv.config();
 const app = express();
@@ -15,6 +19,10 @@ app.use(express.json());
 app.use(express.static('public'));
 
 app.use('/api/users', authRouter);
+app.use('/api/mythology', mythologyRouter);
+app.use('/api/mythology/:mythologyId/myth', mythSectionRouter);
+app.use('/api/mythology/:mythologyId/myth/:mythId/creature', creatureRouter);
+app.use('/api/exercise', exerciseRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: 'Route not found' });
