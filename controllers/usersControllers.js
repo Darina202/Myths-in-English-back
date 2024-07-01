@@ -27,10 +27,14 @@ export const singup = async (req, res, next) => {
       password: hashPassword,
       avatarURL: avatarUrl,
     });
+    const token = jwt.sign({ id: userEmail._id }, SECRET_KEY, {
+      expiresIn: '24h',
+    });
+    await updateUser({ _id: userEmail._id }, { token });
     res.status(201).json({
+      token,
       user: { email: newUser.email, username: newUser.username },
     });
-    // next();
   } catch (error) {
     next(error);
   }
@@ -94,23 +98,6 @@ export const updateAvatar = async (req, res, next) => {
     user: { email: result.email, username: result.username, ...result },
   });
 };
-
-// Response
-//{
-// "langSetting": {
-//     "profLang": "English",
-//     "nativeLang": "Українська"
-// },
-// "_id": "6654b2f08b27eb0f3c484d6f",
-// "username": "Rina",
-// "email": "kicig91322@goulink9.com",
-// "password": "$2b$10$ISuh.Nc.r1IZHE.fIa02Zu6wfl53sTisWtyAJ0LwuOGVdOP3GwmJe",
-// "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NTRiMmYwOGIyN2ViMGYzYzQ4NGQ2ZiIsImlhdCI6MTcxNjgyNzM3MywiZXhwIjoxNzE2OTEzNzczfQ.gHU-Jz--7XKhpTLdA-UeuhfX7-tcZ-xHpIzEKiqBgXQ",
-// "avatarURL": "avatars\\1716897876802_868322541_Знімок екрана 2023-03-09 192950.png",
-// "avatar_id": null,
-// "learnedWord": null,
-// "achievementURL": null,
-// "remind": true,
 
 export const editProfile = async (req, res) => {
   const { username, email } = req.body;

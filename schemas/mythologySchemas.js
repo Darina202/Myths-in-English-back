@@ -1,5 +1,5 @@
 import Joi from 'joi';
 
-export const columnCreateUpdateSchema = Joi.object({
-  column_name: Joi.string().required(),
+export const mythologySchema = Joi.object({
+  mythology_name: Joi.string().required(),
 });
