@@ -27,10 +27,11 @@ export const singup = async (req, res, next) => {
       password: hashPassword,
       avatarURL: avatarUrl,
     });
-    const token = jwt.sign({ id: userEmail._id }, SECRET_KEY, {
+    const payload = { email: newUser.email, id: newUser._id };
+    const token = jwt.sign(payload, SECRET_KEY, {
       expiresIn: '24h',
     });
-    await updateUser({ _id: userEmail._id }, { token });
+    await updateUser({ _id: newUser._id }, { token });
     res.status(201).json({
       token,
       user: { email: newUser.email, username: newUser.username },
