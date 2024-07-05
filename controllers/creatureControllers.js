@@ -1,5 +1,7 @@
 import HttpError from '../helpers/HttpError.js';
 import { getCreatureById } from '../services/creatureServices.js';
+import Creature from '../models/Creature.js';
+import { getRandomCreatureService } from '../services/creatureServices.js';
 
 export const getAllCreature = async (req, res) => {
   const { _id: owner } = req.user;
@@ -10,10 +12,11 @@ export const getAllCreature = async (req, res) => {
   res.json(data);
 };
 
-export const getCardById = async (req, res) => {
-  const { _id: owner } = req.user;
-  const { id } = req.params;
-  const data = await getCreatureById({ owner, _id: id });
-  if (!data) throw HttpError(404, 'Not found');
-  res.json(data);
+export const getRandomCreature = async (req, res) => {
+  try {
+    const randomCreature = await getRandomCreatureService();
+    res.json(randomCreature);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching random creature' });
+  }
 };
